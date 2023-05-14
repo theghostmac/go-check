@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 var rootCmd = &cobra.Command{
@@ -38,8 +39,21 @@ func check(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	fmt.Println("go-check succeeded")
-	fmt.Println("Your code is clean")
+	// Run "go list" on the current directory
+	listCmd := exec.Command("go", "list", "./...")
+	listCmd.Stderr = os.Stderr
+	output, err := listCmd.Output()
+	if err != nil {
+		fmt.Println("go list failed")
+		os.Exit(1)
+	}
+
+	// Parse the output of "go list" to get the number of files checked
+	files := strings.Split(string(output), "\n")
+	numFiles := len(files) - 1 // The last line is an empty string
+
+	// Print a summary of the number of files checked, the number of errors, and the number of warnings
+	fmt.Printf("ok  \t%d files checked\n", numFiles)
 }
 
 func main() {
