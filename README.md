@@ -1,5 +1,3 @@
-Sure! Here's a sample `README.md` file for the `go-check` project:
-
 # go-check
 
 `go-check` is a command-line tool that helps you to check, format, and parse Go code. It is similar to the `cargo check` tool for Rust.
